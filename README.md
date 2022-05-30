@@ -1,2 +1,3 @@
-# docker-deploy-elk
-use docker-compose deploy elk
+# 使用Docker部署ELK
+
+ref: https://github.com/deviantony/docker-elk
