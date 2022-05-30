@@ -1,0 +1,65 @@
+version: '3'
+services:
+  server:
+    image: drone/drone
+    user: ${UID}:${GID}
+    ports:
+    - 9002:80
+    volumes:
+    - <you path>drone/data:/data
+    - <you path>drone/ssl:/etc/certs
+    networks:
+    - drone
+    restart: always
+    environment:
+    - DRONE_SERVER_HOST=<you server host>
+    # 使用的协议http或者https
+    - DRONE_SERVER_PROTO=https
+    # Cookie 超时时间
+    - DRONE_COOKIE_TIMEOUT=720h  
+    # 用户注册限制
+    - DRONE_USER_FILTER=
+    # runner通信密钥，后面runner也要配置相同的值  使用openssl 生成即可
+    - DRONE_RPC_SECRET=<openssl generate value> 
+    # gitee第三方应用client id
+    - DRONE_GITEE_CLIENT_ID=<client id>
+    # gitee第三方应用client secret
+    - DRONE_GITEE_CLIENT_SECRET=6556384a4b24e322d9f3f5209cbc71f8431c7266ca14aeba9278f67fa9859a96
+    # 用户
+    - DRONE_USER_CREATE= 
+    # 时区
+    - TZ="Asia/Shanghaii"
+ 
+  runner:
+    image: drone/drone-runner-docker
+    restart: always
+    ports:
+    - 3000:3000
+    networks:
+    - drone
+    volumes:
+    # 挂载宿主机的docker sock，runner实际还是使用的宿主机的docker daemon
+    - /var/run/docker.sock:/var/run/docker.sock
+    environment:
+    # 与drone server通信的协议http/https
+    - DRONE_RPC_PROTO=https
+    # drone server服务器
+    - DRONE_RPC_HOST=<drone server host>
+    # drone server rpc密钥
+    - DRONE_RPC_SECRET=<>
+    # runner name，标识runner
+    - DRONE_RUNNER_NAME=gitee-runner
+    # runner最多同时执行任务数
+    - DRONE_RUNNER_CAPACITY=2
+
+    - DRONE_HTTP_HOST=runner
+    - DRONE_HTTP_PROTO=https
+       # 是否开启runner ui
+    - DRONE_UI_DISABLE=true
+    # 访问runner ui时的登录用户名
+    - DRONE_UI_USERNAME=<login user>
+    # 访问runner ui时的登录密码
+    - DRONE_UI_PASSWORD=<login password>
+networks:
+  drone:
+

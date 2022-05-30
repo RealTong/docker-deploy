@@ -13,9 +13,9 @@ services:
       ES_JAVA_OPTS: -Xms512m -Xmx512m
       ELASTIC_PASSWORD: ${ELASTIC_PASSWORD}
     volumes:
-      - C:/Users/Antwu/Desktop/elk/elk/elasticsearch/config/elasticsearch.yml:/usr/share/elasticsearch/config/elasticsearch.yml
-      - C:/Users/Antwu/Desktop/elk/elk/elasticsearch/data:/usr/share/elasticsearch/data
-      - C:/Users/Antwu/Desktop/elk/elk/elasticsearch/logs:/usr/share/elasticsearch/logs
+      - <you path>/elasticsearch/config/elasticsearch.yml:/usr/share/elasticsearch/config/elasticsearch.yml
+      - <you path>/elasticsearch/data:/usr/share/elasticsearch/data
+      - <you path>/elasticsearch/logs:/usr/share/elasticsearch/logs
     networks:
       - elk
 
@@ -29,7 +29,7 @@ services:
       ELASTICSEARCH_URL: http://elasticsearch:9200
       KIBANA_SYSTEM_PASSWORD: ${KIBANA_SYSTEM_PASSWORD}
     volumes:
-      - C:/Users/Antwu/Desktop/elk/elk/kibana/config:/usr/share/kibana/config
+      - <you path>/kibana/config:/usr/share/kibana/config
     networks:
       - elk
 
@@ -40,8 +40,8 @@ services:
       - 5044:5044
       - 5045:5045
     volumes:
-      - C:/Users/Antwu/Desktop/elk/elk/logstash/config/logstash.yml:/usr/share/logstash/config/logstash.yml
-      - C:/Users/Antwu/Desktop/elk/elk/logstash/pipeline:/usr/share/logstash/pipeline
+      - <you path>/logstash/config/logstash.yml:/usr/share/logstash/config/logstash.yml
+      - <you path>/logstash/pipeline:/usr/share/logstash/pipeline
     networks:
       - elk
 
@@ -50,9 +50,9 @@ services:
     restart: always
     container_name: filebeat
     volumes:
-      - "/c/Users/Antwu/Desktop/elk/elk/filebeat/config/filebeat.yml:/usr/share/filebeat/filebeat.yml:ro"
-      - C:/Users/Antwu/Desktop/elk/elk/filebeat/data:/usr/share/filebeat/data:ro
-      - C:/Users/Antwu/Desktop/logs:/var/logs:ro
+      - <username>/Desktop/elk/elk/filebeat/config/filebeat.yml:/usr/share/filebeat/filebeat.yml:ro
+      - <you path>/filebeat/data:/usr/share/filebeat/data:ro
+      - <username>/Desktop/logs:/var/logs:ro
     networks:
       - elk
 
