@@ -1,0 +1,62 @@
+version: '3'
+
+services:
+  elasticsearch:
+    image: elasticsearch:8.2.2
+    ports:
+      - 9200:9200
+      - 9300:9300
+    restart: always
+    container_name: elasticsearch
+    environment:
+      discovery.type: single-node
+      ES_JAVA_OPTS: -Xms512m -Xmx512m
+      ELASTIC_PASSWORD: ${ELASTIC_PASSWORD}
+    volumes:
+      - C:/Users/Antwu/Desktop/elk/elk/elasticsearch/config/elasticsearch.yml:/usr/share/elasticsearch/config/elasticsearch.yml
+      - C:/Users/Antwu/Desktop/elk/elk/elasticsearch/data:/usr/share/elasticsearch/data
+      - C:/Users/Antwu/Desktop/elk/elk/elasticsearch/logs:/usr/share/elasticsearch/logs
+    networks:
+      - elk
+
+  kibana:
+    image: kibana:8.2.2
+    ports:
+      - 5601:5601
+    restart: always
+    container_name: kibana
+    environment:
+      ELASTICSEARCH_URL: http://elasticsearch:9200
+      KIBANA_SYSTEM_PASSWORD: ${KIBANA_SYSTEM_PASSWORD}
+    volumes:
+      - C:/Users/Antwu/Desktop/elk/elk/kibana/config:/usr/share/kibana/config
+    networks:
+      - elk
+
+  logstash:
+    image: logstash:8.2.2
+    container_name: logstash
+    ports:
+      - 5044:5044
+      - 5045:5045
+    volumes:
+      - C:/Users/Antwu/Desktop/elk/elk/logstash/config/logstash.yml:/usr/share/logstash/config/logstash.yml
+      - C:/Users/Antwu/Desktop/elk/elk/logstash/pipeline:/usr/share/logstash/pipeline
+    networks:
+      - elk
+
+  filebeat:
+    image: elastic/filebeat:8.2.2
+    restart: always
+    container_name: filebeat
+    volumes:
+      - "/c/Users/Antwu/Desktop/elk/elk/filebeat/config/filebeat.yml:/usr/share/filebeat/filebeat.yml:ro"
+      - C:/Users/Antwu/Desktop/elk/elk/filebeat/data:/usr/share/filebeat/data:ro
+      - C:/Users/Antwu/Desktop/logs:/var/logs:ro
+    networks:
+      - elk
+
+networks:
+  elk:
+    driver: bridge
+    external: true

@@ -1,0 +1,17 @@
+# 设置中文
+i18n.locale: "zh-CN"
+
+server.name: kibana
+
+server.host: "0.0.0.0"
+# es地址   本网络内的es
+elasticsearch.hosts: [ "http://elasticsearch:9200" ]
+
+monitoring.ui.container.elasticsearch.enabled: true
+
+## X-Pack security credentials
+elasticsearch.username: kibana_system
+elasticsearch.password: ${KIBANA_SYSTEM_PASSWORD}
+
+
+
