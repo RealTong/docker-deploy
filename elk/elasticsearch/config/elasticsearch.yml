@@ -1,0 +1,8 @@
+# 设置节点名称
+cluster.name: "docker-cluster"
+network.host: 0.0.0.0
+
+# X-Pack 设置
+# 使用免费许可证
+xpack.license.self_generated.type: basic
+xpack.security.enabled: true
